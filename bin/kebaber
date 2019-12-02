@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use App\Command\MeatOptionsCommand;
+use App\Command\OrderKebabCommand;
+use App\Command\SauceOptionsCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+
+$application->add(new OrderKebabCommand());
+$application->add(new SauceOptionsCommand());
+$application->add(new MeatOptionsCommand());
+
+$application->run();

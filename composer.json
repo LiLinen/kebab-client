@@ -1,0 +1,25 @@
+{
+  "name": "lilinen/kebab-client",
+  "description": "Example Application With a Custom Dependency Injection Container",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Linas Linartas",
+      "email": "linas@linartas.lt"
+    }
+  ],
+  "require": {
+    "symfony/console": "^4.",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.11.19"
+  }
+}
