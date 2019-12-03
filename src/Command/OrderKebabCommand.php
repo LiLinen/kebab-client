@@ -128,6 +128,8 @@ class OrderKebabCommand extends Command
         }
         $progressBar->finish();
 
+        // TODO: IMPLEMENT ORDERING! !!!!!
+
         $output->writeln('');
         $output->writeln('');
         $output->writeln('');
