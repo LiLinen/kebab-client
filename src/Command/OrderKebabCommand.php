@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Client\KebaberClient;
+use App\DataProvider\MeatProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +16,21 @@ class OrderKebabCommand extends Command
     protected const COMMAND_DESCRIPTION = 'Order a Kebab';
 
     protected static $defaultName = 'order';
+
+    /**
+     * @var MeatProvider
+     */
+    private $meatProvider;
+
+    /**
+     * @param MeatProvider $meatProvider
+     */
+    public function __construct(MeatProvider $meatProvider)
+    {
+        parent::__construct(null);
+
+        $this->meatProvider = $meatProvider;
+    }
 
     /**
      * @return void
@@ -33,17 +50,11 @@ class OrderKebabCommand extends Command
     {
         $output->writeln('<comment>Ordering Kebab</comment>');
 
-        //region Resolve Meat
-        $cUrl = curl_init();
-        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.io/meats');
-        curl_setopt($cUrl, CURLOPT_PORT, '8000');
-        curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, true);
-        $json = curl_exec($cUrl);
-        $data = json_decode($json, true);
+        $data = $this->meatProvider->provideMeat();
 
         $meatOptions = [];
         foreach ($data as $meatData) {
-            $meatOptions[] = $meatData['name'];
+            $meatOptions[] = $meatData->getName();
         }
 
         $choiceQuestion = new ChoiceQuestion(
@@ -64,7 +75,7 @@ class OrderKebabCommand extends Command
 
         //region Resolve Sauce
         $cUrl = curl_init();
-        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.io/sauces');
+        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.er/sauces');
         curl_setopt($cUrl, CURLOPT_PORT, '8000');
         curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, true);
         $json = curl_exec($cUrl);

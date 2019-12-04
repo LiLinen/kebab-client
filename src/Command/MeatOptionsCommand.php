@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Client\KebaberClient;
+use App\DataProvider\MeatProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,6 +13,21 @@ class MeatOptionsCommand extends Command
     protected const COMMAND_DESCRIPTION = 'List Meat Options';
 
     protected static $defaultName = 'options:meat';
+
+    /**
+     * @var MeatProvider
+     */
+    private $meatProvider;
+
+    /**
+     * @param MeatProvider $meatProvider
+     */
+    public function __construct(MeatProvider $meatProvider)
+    {
+        parent::__construct(null);
+
+        $this->meatProvider = $meatProvider;
+    }
 
     /**
      * @return void
@@ -31,16 +48,10 @@ class MeatOptionsCommand extends Command
         $output->writeln('<comment>Listing Kebab Meat Options:</comment>');
         $output->writeln('');
 
-        $cUrl = curl_init();
-        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.io/meats');
-        curl_setopt($cUrl, CURLOPT_PORT, '8000');
-        curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, true);
-        $json = curl_exec($cUrl);
-
-        $data = json_decode($json, true);
+        $data = $this->meatProvider->provideMeat();
 
         foreach ($data as $i => $meat) {
-            $formatted = "[<info>$i</info>] {$meat['name']}: {$meat['description']}";
+            $formatted = "[<info>$i</info>] {$meat->getName()}: {$meat->getDescription()}";
             $output->writeln($formatted);
         }
 

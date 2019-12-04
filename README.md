@@ -1,4 +1,4 @@
-# Kebab.io Client
+# kebab.er Client
 
 Order Kebab Through Your Terminal!
 

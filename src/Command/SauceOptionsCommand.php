@@ -32,7 +32,7 @@ class SauceOptionsCommand extends Command
         $output->writeln('');
 
         $cUrl = curl_init();
-        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.io/sauces');
+        curl_setopt($cUrl, CURLOPT_URL, 'http://kebab.er/sauces');
         curl_setopt($cUrl, CURLOPT_PORT, '8000');
         curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, true);
         $json = curl_exec($cUrl);

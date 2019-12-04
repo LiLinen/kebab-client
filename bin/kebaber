@@ -3,15 +3,24 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
+use App\Client\KebaberClient;
 use App\Command\MeatOptionsCommand;
 use App\Command\OrderKebabCommand;
 use App\Command\SauceOptionsCommand;
+use App\Container\StaticContainer;
+use App\DataProvider\MeatProvider;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 
-$application->add(new OrderKebabCommand());
+$container = require __DIR__.'/../config/services.php';
+
+$application->add(new OrderKebabCommand($container->get(MeatProvider::class)));
 $application->add(new SauceOptionsCommand());
-$application->add(new MeatOptionsCommand());
+
+
+$application->add(new MeatOptionsCommand(
+    $container->get(MeatProvider::class))
+);
 
 $application->run();
